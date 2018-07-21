@@ -13,26 +13,38 @@ public class playermove : MonoBehaviour {
 
 	public float vertvel = 0;
 
+	private int currentLane = 2;
 
 	// Use this for initialization
-	void Start () {
+	private void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		GetComponent<Rigidbody> ().velocity = new Vector3 (horizvel, 0, 4);
 
-		if (Input.GetKeyDown (moveL)) {
 
+
+		GetComponent<Rigidbody> ().velocity = new Vector3 (horizvel, 0, 1);
+
+		if (Input.GetKeyDown (moveL) &&(currentLane > 1)) {
 			horizvel = -2;
-		
+			StartCoroutine(stopSlide());
+			currentLane -= 1;
 		}
+
+		if (Input.GetKeyDown (moveR) && (currentLane < 3)) {
+			horizvel = 2;
+			StartCoroutine(stopSlide());
+			currentLane += 1;
+		}
+
+
 	}
-
-
-
-
-
-
+	IEnumerator stopSlide() 
+	{
+		yield return new WaitForSeconds (.5f);
+		horizvel = 0;
+	}
+}
